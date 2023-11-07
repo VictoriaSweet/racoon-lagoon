@@ -1,21 +1,8 @@
-const express = require("express");
-const db = require("./db");
-const app = express();
-const port = 3000;
-const bodyParser = require("body-parser");
+const db = require("./lib/db");
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+const CLI = require("./lib/cli.js");
+const cli = new CLI();
 
-app.get("/employees", async (req, res) => {
-  db.query("SELECT * FROM employees", (err, rows) => {
-    if (err) {
-      console.log(err);
-      res.status(500);
-    } else {
-      res.json(rows);
-    }
-  });
+cli.run().then((output) => {
+  console.log(output);
 });
-
-app.listen(port, () => console.log(`Server listening on port ${port}`));
